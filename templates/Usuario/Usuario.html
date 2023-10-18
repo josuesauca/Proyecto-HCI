@@ -1,0 +1,37 @@
+{% extends "Usuario/Login.html" %}
+{% load static %}
+{% block content %}
+
+<link rel="stylesheet" href="{% static "css/login.css" %}">
+
+<div class="container">
+    <section class="form-main">
+        <div class="form-content">
+            <div class="box">
+
+                <a href="{% url 'login' %}">
+                    <i class="fa-solid fa-delete-left fa-2x"></i>
+                </a>
+                <h3>Crear Cuenta</h3>
+                <center><i class="fa-solid fa-user-shield fa-10x"></i></center>
+                <form action="{% url 'registrarUsuario' %}"  method="POST">
+                    {% csrf_token %}
+                    <div class="input-box">
+                        <input type="text" placeholder="Usuario" name ="username" class="input-control"  required>
+                    </div>
+                    <div class="input-box">
+                        <input type="email" placeholder="Email" name ="email" class="input-control"  required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Contraseña" name ="password1" class="input-control"  required>
+                    </div>
+                    <div class="input-box">
+                        <input type="password" placeholder="Repetir Contraseña" name ="password2" class="input-control"  required>
+                    </div>
+                    <button type="submit" class="btn">Crear Cuenta</button>
+                </form>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}

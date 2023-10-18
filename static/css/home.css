@@ -1,0 +1,71 @@
+:root{
+    --degradado:linear-gradient(90seg, var);
+}
+
+
+section{
+    min-height: 100vh;
+    padding: 0 9%;
+    padding-top: 7.5rem;
+    padding-bottom: 2rem;
+}
+
+/*.btn{
+    display: inline-block;
+    margin-top: 1rem;
+    padding: .8rem 3rem;
+    border-radius: 5rem;
+    background-color: lightslategray;
+    font-size: 1.8rem;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .1);
+    transition: all 3.s linear;
+    
+}
+
+
+.btn:hover{
+    transform: scale(1.025);
+}
+*/
+.inicio{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-size: cover;
+    background-color: lightslategray;
+    background-position:center;
+    margin: 0%;
+    padding: 0%;
+
+}
+
+.inicio .image img{
+    width: 40vw;
+    animation: float 3s linear infinite;
+}
+
+@keyframes float{
+    0%,100%{
+        transform: translateY(0rem);
+    }
+    50%{
+        transform: translateY(-3.5rem);
+    }
+}
+
+.inicio .content h3{
+    font-size: 5.5rem;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+
+.inicio .content p{
+    font-size: 1.7rem;
+    color: azure;
+    padding: 1rem 0;
+    text-align: auto;
+}

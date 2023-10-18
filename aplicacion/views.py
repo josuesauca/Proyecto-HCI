@@ -1,8 +1,56 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
+from django.http import HttpResponse, HttpRequest
+from django.shortcuts import render, redirect
+from .decorators import unauthenticated_user,admin_only
+from django.contrib.auth.models import User, Group
+
 import requests, uuid, json
-from django.http import HttpResponse
 
 # Create your views here.
+
+def PaginaInicio(request):
+    return render(request, 'index.html', {})
+
+class AccionesUsuario(HttpRequest):
+
+    @unauthenticated_user
+    def log_in(request):
+        if(request.method == "POST"):
+            user = authenticate(request, username=request.POST["username"], password=request.POST["password"])
+            if user is None:
+                messages.error(request,"Usuario no encontrado")
+                return redirect("login")
+            else:
+                login(request, user)
+                return redirect("index")
+        else:
+            return render(request, "Usuario/Login.html",{})
+            
+    def log_out(request):
+        logout(request)
+        return redirect("index")
+    
+    def registro_usuario(request):
+        if(request.method == "POST"):
+            if request.POST["password1"] == request.POST["password2"]:
+                username = request.POST['username']
+                email = request.POST['email']
+                password1 = request.POST['password1']
+                user = User.objects.create_user(
+                        username=username, password=password1, email=email)
+                
+                my_group = Group.objects.get(name='usuario') 
+                my_group.user_set.add(user)
+
+            user.save()
+            return redirect("registrarPasajero")
+        else:
+            return render(request, "Usuario/Usuario.html",{})
+
+
+
+
 
 def Inicio(request):
 

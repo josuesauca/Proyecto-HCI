@@ -1,0 +1,98 @@
+{%load static%}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Bus</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous" />
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+        crossorigin="anonymous"></script>
+        
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+        crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" />
+
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+        <a class="navbar-brand" href="{% url 'index' %}"><i class="fa-solid fa-house"></i> Inicio</a>
+
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+
+                {% if user.is_authenticated %}
+                    {% if user.is_superuser %}
+                        <a class="nav-link" href="{% url 'administrarCooperativas' %}" role="button" aria-haspopup="true" aria-expanded="false"> Administrador </a>
+                    {% else %}
+                        <a class="nav-link" href="{% url 'informacionPasajero' %}" role="button" aria-haspopup="true" aria-expanded="false"> Datos del Usuario</a>
+                        <a class="nav-link" href="{% url 'gestionarViaje' %}" role="button" aria-haspopup="true" aria-expanded="false"> Viajes </a>
+                    {% endif %}
+                {% endif %}
+
+            </ul>
+
+            {% if user.is_authenticated %}
+                <button type="button" class="btn  btn-success" disabled>Bienvenido {{ user.get_username }}</button>
+                <a class="btn btn-outline-danger  float-right mx-3" id = "txtSalir" href="{% url "logout" %}" >Logout</a>
+            {% else %}
+                <a class="btn btn-outline-success  float-right mx-3" href="{% url "login" %}" id = 'txtIngresar'>Login</a>
+            {% endif %}
+
+        </div>
+    </nav>
+
+    <div class="content">
+        {% block content %}
+
+        <link rel="stylesheet" href="{% static "css/home.css" %}">
+        
+        <section class="inicio" id="inicio">
+            <div class="content">
+                <h3>ALEJANDRO BENCH <span> Sistema</span></h3>
+                <div class="container">
+                    <p class="border border-secondary">La tecnología está en constante desarrollo, adquirir algunos componentes
+                        dentro de tu localidad, puede resultar complicado, la mejor opción es realizarlo mediante
+                        una tienda online, con variedad de productos y precios.
+                    </p>
+
+                {% if user.is_authenticated %}
+                    <center><a class="btn btn-danger btn-lg" href="{% url 'index' %}">Inicio</a></center>
+                {% else %}
+                    <center><a class="btn btn-danger btn-lg" href="{% url 'login' %}">Ingresar al Sistema</a></center>
+                {% endif %}
+                </div>
+            </div>
+            <div class="image">
+                <img src="https://innovaciondigital.pe/wp-content/uploads/2021/03/comercio-electronico-como-estrategia-de-negocios.png" alt="">
+            </div>
+
+        </section>
+        {% endblock content%}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
