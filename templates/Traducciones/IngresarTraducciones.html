@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+{% if form.errors %}
+<div class="alert alert-danger" role="alert">Ha sucedido un error</div>
+{% endif %}
+
+<h1>Registrar Tarjeta</h1>
+
+<form action="{% url 'traducirTexto' %}" enctype="multipart/form-data" method="POST">
+    {% csrf_token %}
+    
+    {{ form | crispy }}
+    <button type="submit" class="btn btn-primary">Guardar</button>
+</form>
+
+<div class="container">
+    <p></p>
+    <p></p>
+    <h1>Tarjetas Registradas</h1>
+    <p></p>
+    <p></p>
+
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Número Tarjeta</th>
+                <th scope="col">Saldo Tarjeta</th>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+          
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -25,12 +25,13 @@ import aplicacion.views as vistas
 urlpatterns = [
 
     path('admin/', admin.site.urls),
-    path('prueba/', vistas.Inicio,name='prueba'),
-    path('imagenes/', vistas.leer_imagenes,name='imagenes'),
+    #path('prueba/', vistas.Inicio,name='prueba'),
+    #path('imagenes/', vistas.AccionesUsuario.traducir_texto,name='imagenes'),
 
 
     path('', vistas.PaginaInicio,name='index'),
 
+    path('traducirTexto/', vistas.AccionesUsuario.traducir_texto,name='traducirTexto'),
 
     #URLs Usuario
     path('login/', vistas.AccionesUsuario.log_in ,name='login'),
@@ -41,4 +42,4 @@ urlpatterns = [
 
 
 if settings.DEBUG:
-    urlpatterns = urlpatterns + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
