@@ -17,6 +17,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+
+import aplicacion.views as vistas
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('prueba/', vistas.Inicio,name='prueba'),
+    path('imagenes/', vistas.leer_imagenes,name='imagenes'),
 ]

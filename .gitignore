@@ -2,8 +2,6 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=django
 
 
-cedulas.txt
-
 ### Django ###
 *.log
 *.pot
