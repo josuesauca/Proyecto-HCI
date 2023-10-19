@@ -25,13 +25,17 @@ from PIL import Image
 import sys
 import time
 
+
 import requests, uuid, json
+
+#Libreria del firebase
+import pyrebase
 
 # Create your views here.
 
 def PaginaInicio(request):
 
-    
+    AccionesUsuario.guardar_imagen()
 
 
     return render(request, 'index.html', {})
@@ -71,6 +75,39 @@ class AccionesUsuario(HttpRequest):
             return redirect("login")
         else:
             return render(request, "Usuario/Usuario.html",{})
+        
+
+    def guardar_imagen():
+        firebaseConfig = {
+            "apiKey": "AIzaSyD8kAB8294CT7IZRZ8lV_Pc6EIZhOP0yJ0",
+            "authDomain": "trabajo-autonomo-3-283ba.firebaseapp.com",
+            "projectId": "trabajo-autonomo-3-283ba",
+            "storageBucket": "trabajo-autonomo-3-283ba.appspot.com",
+            "messagingSenderId": "158058285647",
+            "appId": "1:158058285647:web:ab8a77af641bd438f7f83a",
+            "databaseURL" : "https://trabajo-autonomo-3-283ba-default-rtdb.firebaseio.com/"
+        }
+
+        settings.MEDIA_URL
+
+        firebase = pyrebase.initialize_app(firebaseConfig)
+        storage = firebase.storage()
+        image_path = os.path.join(settings.MEDIA_ROOT, '1.png')
+        
+        print(image_path)
+
+        with Image.open(image_path) as img:
+            img = img.resize((200, 200))
+
+        storage.child(image_path).put('1.png')
+
+        """
+        print(image_path,'hola')
+
+        with open(image_path, 'rb') as f:
+            image_data = f.read()
+
+        """
     
     def traducir_texto(request):
 
@@ -80,14 +117,14 @@ class AccionesUsuario(HttpRequest):
         #imagenTraduccion = Traduccion.objects.first().imagenTraduccion.url
         
         read_image_url = "https://s.bibliaon.com/es/imagenes/gracias-senor-por-este-nuevo-dia-que-me-permites-comenzar-0.jpg"
-
+        read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=57f84b8f-a63b-4b85-b6fa-f83d9de7a92a&_gl=1*1j53n0p*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY3MTIzNC4yLjEuMTY5NzY3MTUwOC4zOC4wLjA.'
+        #read_image_url = 'https://cdn0.bodas.com.mx/article/0265/original/1280/png/55620-1.jpeg'
         #read_image_url = 'https://images.vexels.com/content/222142/preview/graffiti-alphabet-letter-set-da9351.png'
 
         image_path = os.path.join(settings.MEDIA_ROOT, '1.png')
 
         with open(image_path, 'rb') as f:
             image_data = f.read()
-
 
         computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))
 

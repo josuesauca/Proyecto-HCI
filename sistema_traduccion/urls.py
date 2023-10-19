@@ -38,8 +38,7 @@ urlpatterns = [
     path('registrarUsuario/', vistas.AccionesUsuario.registro_usuario ,name='registrarUsuario'),
     path('logout/', vistas.AccionesUsuario.log_out ,name='logout'),
 
-]
-
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
