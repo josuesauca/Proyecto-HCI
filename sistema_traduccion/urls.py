@@ -28,10 +28,10 @@ urlpatterns = [
     #path('prueba/', vistas.Inicio,name='prueba'),
     #path('imagenes/', vistas.AccionesUsuario.traducir_texto,name='imagenes'),
 
-
     path('', vistas.PaginaInicio,name='index'),
 
     path('traducirTexto/', vistas.AccionesUsuario.traducir_texto,name='traducirTexto'),
+    path('guardarImagen/',vistas.guardarImagen,name = 'guardarImagen'),
 
     #URLs Usuario
     path('login/', vistas.AccionesUsuario.log_in ,name='login'),
