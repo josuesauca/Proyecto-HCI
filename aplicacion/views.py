@@ -159,13 +159,14 @@ class AccionesUsuario(HttpRequest):
 
         email = "josue.sauca@unl.edu.ec"
         password = "043708ap9"
-        
-        #user = auth.sign_in_with_email_and_password(email, password)
 
-        #url = storage.child("1.png").get_url(user)
+        #storage.download('2.jpg', '2.jpg')
         
-        #print(user,"url")
-    
+        print('hola', storage.child('5.jpg').get_url(None))
+
+
+
+        
     def traducir_texto(request):
 
         formulario = FormularioImagen()
@@ -184,6 +185,7 @@ class AccionesUsuario(HttpRequest):
         #read_image_url = 'https://images.vexels.com/content/222142/preview/graffiti-alphabet-letter-set-da9351.png'
         #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/home%2Fjosuesauca%2FDocumentos%2FProyecto%20Grupal%2Fsistema_traduccion%2Fmedia%2F1.png?alt=media&token=205a398c-20ab-480b-b3b9-cbe3389a86bf&_gl=1*7zzbfs*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5MDg4Ni41LjEuMTY5NzY5MTIzOC40Ny4wLjA.'
 
+        read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/5.jpg?alt=media'
         image_path = os.path.join(settings.MEDIA_ROOT, '1.png')
 
         with open(image_path, 'rb') as f:
