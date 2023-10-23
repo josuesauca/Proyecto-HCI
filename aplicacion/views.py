@@ -3,7 +3,6 @@ from django.contrib.auth import login, authenticate, logout
 from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
-
 from django.conf import settings
 
 
@@ -35,10 +34,10 @@ import pyrebase
 def guardarImagen(request):
     formulario = FormularioImagen()
     if request.method == 'POST':
+        formulario = FormularioImagen(request.POST,request.FILES)
         #imagen = request.POST.get('input').name
         #print("url",request.FILES['input'].temporary_file_path())
         #print("url",imagen)
-        formulario = FormularioImagen(request.POST,request.FILES)
         #AccionesUsuario.guardar_imagen(request.FILES.get('imagenTraduccion'))
 
         if formulario.is_valid():
@@ -51,9 +50,7 @@ def guardarImagen(request):
         return render(request, "Traducciones/IngresarTraducciones.html",{'form':formulario})
 
 def PaginaInicio(request):
-
-    AccionesUsuario.obtener_imagen()
-
+    #AccionesUsuario.obtener_imagen()
     return render(request, 'index.html', {})
 
 class AccionesUsuario(HttpRequest):
@@ -154,19 +151,10 @@ class AccionesUsuario(HttpRequest):
 
         firebase = pyrebase.initialize_app(firebaseConfig)
         storage = firebase.storage()
-
-        auth = firebase.auth()
-
-        email = "josue.sauca@unl.edu.ec"
-        password = "043708ap9"
-
-        #storage.download('2.jpg', '2.jpg')
         
         print('hola', storage.child('5.jpg').get_url(None))
 
 
-
-        
     def traducir_texto(request):
 
         formulario = FormularioImagen()
@@ -176,8 +164,7 @@ class AccionesUsuario(HttpRequest):
         endpoint = 'https://saucajosue.cognitiveservices.azure.com/'
         key = '59fdd9553b4643f29bb2bbb0802aad32'
 
-        #imagenTraduccion = Traduccion.objects.first().imagenTraduccion.url
-        
+       
         read_image_url = "https://s.bibliaon.com/es/imagenes/gracias-senor-por-este-nuevo-dia-que-me-permites-comenzar-0.jpg"
         #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=57f84b8f-a63b-4b85-b6fa-f83d9de7a92a&_gl=1*1j53n0p*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY3MTIzNC4yLjEuMTY5NzY3MTUwOC4zOC4wLjA.'
         read_image_url = 'https://cdn0.bodas.com.mx/article/0265/original/1280/png/55620-1.jpeg'
@@ -186,10 +173,6 @@ class AccionesUsuario(HttpRequest):
         #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/home%2Fjosuesauca%2FDocumentos%2FProyecto%20Grupal%2Fsistema_traduccion%2Fmedia%2F1.png?alt=media&token=205a398c-20ab-480b-b3b9-cbe3389a86bf&_gl=1*7zzbfs*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5MDg4Ni41LjEuMTY5NzY5MTIzOC40Ny4wLjA.'
 
         read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/5.jpg?alt=media'
-        image_path = os.path.join(settings.MEDIA_ROOT, '1.png')
-
-        with open(image_path, 'rb') as f:
-            image_data = f.read()
 
         computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))
 
