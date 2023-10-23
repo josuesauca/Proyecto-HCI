@@ -9,7 +9,7 @@ from django.conf import settings
 
 from .decorators import unauthenticated_user,admin_only
 from .models import *
-from .forms import FormularioTraduccion,FormularioTraduccionObtenida
+from .forms import *
 
 
 #librerias para leer texto de imagenes
@@ -33,16 +33,22 @@ import pyrebase
 # Create your views here.
 
 def guardarImagen(request):
+    formulario = FormularioImagen()
     if request.method == 'POST':
+        #imagen = request.POST.get('input').name
+        #print("url",request.FILES['input'].temporary_file_path())
+        #print("url",imagen)
+        formulario = FormularioImagen(request.POST,request.FILES)
+        #AccionesUsuario.guardar_imagen(request.FILES.get('imagenTraduccion'))
 
-        print(request.POST.get('input'))
-        imagen = request.POST.get('input')
+        if formulario.is_valid():
+            #print('entra aqui',request.FILES)
+            formulario.save()
+            AccionesUsuario.guardar_imagen(str(request.FILES.get('imagenTraduccion')))
 
-        AccionesUsuario.guardar_imagen(imagen)
-
-        return render(request, "Traducciones/IngresarTraducciones.html",{})
+        return render(request, "Traducciones/IngresarTraducciones.html",{'form':formulario})
     else:
-        return render(request, "Traducciones/IngresarTraducciones.html",{})
+        return render(request, "Traducciones/IngresarTraducciones.html",{'form':formulario})
 
 def PaginaInicio(request):
 
@@ -110,13 +116,18 @@ class AccionesUsuario(HttpRequest):
             "databaseURL" : "https://trabajo-autonomo-3-283ba-default-rtdb.firebaseio.com/"
         }
 
+        path_imagen = str(url)
+        image_name = path_imagen.split('/')[-1]
+
+        print(image_name,"hola")
+
         firebase = pyrebase.initialize_app(firebaseConfig)
         storage = firebase.storage()
-        image_path = os.path.join(settings.MEDIA_ROOT, '1.png')
+        image_path = os.path.join(settings.MEDIA_ROOT,image_name)
         
-        print(image_path)
-        #storage.child(url).put('1.png')
-        storage.child(url).put('1.png')
+        print(image_path,"path")
+        #storage.child(url).put(image_path)
+        #storage.child("5.jpg").put(image_path)
 
     def obtener_imagen():
         firebaseConfig = {
@@ -144,14 +155,21 @@ class AccionesUsuario(HttpRequest):
 
         firebase = pyrebase.initialize_app(firebaseConfig)
         storage = firebase.storage()
-        image_path = os.path.join(settings.MEDIA_ROOT, '1.png')
+
+        auth = firebase.auth()
+
+        email = "josue.sauca@unl.edu.ec"
+        password = "043708ap9"
         
-        print(image_path)
-        #storage.child(url).put('1.png')
-        hola = storage.child("1.png'").get_url(None)
-        print(hola,"hola")
+        #user = auth.sign_in_with_email_and_password(email, password)
+
+        #url = storage.child("1.png").get_url(user)
+        
+        #print(user,"url")
     
     def traducir_texto(request):
+
+        formulario = FormularioImagen()
 
         hola = request
 
@@ -163,7 +181,7 @@ class AccionesUsuario(HttpRequest):
         read_image_url = "https://s.bibliaon.com/es/imagenes/gracias-senor-por-este-nuevo-dia-que-me-permites-comenzar-0.jpg"
         #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=57f84b8f-a63b-4b85-b6fa-f83d9de7a92a&_gl=1*1j53n0p*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY3MTIzNC4yLjEuMTY5NzY3MTUwOC4zOC4wLjA.'
         read_image_url = 'https://cdn0.bodas.com.mx/article/0265/original/1280/png/55620-1.jpeg'
-        read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=dc668657-1b60-4208-8e73-389bfdac4adc&_gl=1*1h8dh2d*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5NjMzMC42LjEuMTY5NzY5NjY1Mi42MC4wLjA.'
+        #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=dc668657-1b60-4208-8e73-389bfdac4adc&_gl=1*1h8dh2d*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5NjMzMC42LjEuMTY5NzY5NjY1Mi42MC4wLjA.'
         #read_image_url = 'https://images.vexels.com/content/222142/preview/graffiti-alphabet-letter-set-da9351.png'
         #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/home%2Fjosuesauca%2FDocumentos%2FProyecto%20Grupal%2Fsistema_traduccion%2Fmedia%2F1.png?alt=media&token=205a398c-20ab-480b-b3b9-cbe3389a86bf&_gl=1*7zzbfs*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5MDg4Ni41LjEuMTY5NzY5MTIzOC40Ny4wLjA.'
 
@@ -198,7 +216,6 @@ class AccionesUsuario(HttpRequest):
                     palabras_imagen = palabras_imagen + " " + line.text
         print("palabras obtenidas ", palabras_imagen)
 
-
         #Traduccir el texto obtenido
 
         endpoint = 'https://api.cognitive.microsofttranslator.com/'
@@ -231,7 +248,7 @@ class AccionesUsuario(HttpRequest):
 
         print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
 
-        return render(hola, "Traducciones/IngresarTraducciones.html",{})
+        return render(hola, "Traducciones/IngresarTraducciones.html",{'form':formulario})
 
 
 

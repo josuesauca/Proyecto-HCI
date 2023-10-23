@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 
-from .models import Traduccion,TraduccionObtenido
+from .models import Traduccion,TraduccionObtenido, Imagen
 
 
 class FormularioTraduccion(forms.ModelForm):
@@ -15,7 +15,6 @@ class FormularioTraduccionObtenida(forms.ModelForm):
         model = TraduccionObtenido
         fields = "__all__"
 
-
 class FormularioUsuario(UserCreationForm):
     class Meta:
         model = User
@@ -26,3 +25,8 @@ class FormularioUsuario(UserCreationForm):
         self.fields['username'].help_text = None
         self.fields['password1'].help_text = None
         self.fields['password2'].help_text = None
+
+class FormularioImagen(forms.ModelForm):
+    class Meta:
+        model = Imagen
+        fields = ['imagenTraduccion']

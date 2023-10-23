@@ -6,3 +6,4 @@ from aplicacion.models import *
 
 admin.site.register(Traduccion)
 admin.site.register(TraduccionObtenido)
+admin.site.register(Imagen)

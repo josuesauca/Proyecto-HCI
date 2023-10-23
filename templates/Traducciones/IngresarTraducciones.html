@@ -2,18 +2,19 @@
 {% load crispy_forms_tags %}
 {% block content %}
 
+
 <h1>Registrar Imagen</h1>
 
-<form method="POST" action="{% url 'guardarImagen' %}" >
+<form method="POST" id="location_form" action="{% url 'guardarImagen' %}" enctype="multipart/form-data"> 
     {% csrf_token %}
 
-
-    <input type="file" name="input">
-    <br>
-
+    {{ form | crispy }}
     <input type="submit"></input>
-  </form>
+</form>
 
+<!-- Include the JavaScript file -->
+{% load static %}
+<script src="{% static 'javascript/IngresarTraducciones.js' %}"></script>
 
 <div class="container">
     <p></p>

@@ -1,11 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+class Imagen(models.Model):
+    idImagen = models.AutoField(primary_key=True)
+    imagenTraduccion = models.ImageField(upload_to= "imagenes/", null=True)
+
 # Create your models here.
 class Traduccion(models.Model):
     idTraduccion = models.AutoField(primary_key=True)
     idUsuario = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
-    imagenTraduccion = models.ImageField(upload_to= "imagenes/", null=True)
+    idImagen = models.ForeignKey(Imagen,null=True,on_delete=models.CASCADE)
     horaTraduccion = models.DecimalField(max_digits= 6,decimal_places=2,null=True) 
     textoTraduccion = models.CharField(max_length=500,null=True) 
     idioma = models.CharField(max_length=10,null=True) 
@@ -14,7 +18,6 @@ class Traduccion(models.Model):
     def __str__(self):
         return f"Tarjeta : {self.idTarjeta}  , {self.numTarjeta} , {self.saldoTarjeta} "
     """
-
 class TraduccionObtenido(models.Model):
     idTraduccion = models.ForeignKey(Traduccion,null=True,on_delete=models.CASCADE)
     idTraduccionObtenida = models.AutoField(primary_key=True)
