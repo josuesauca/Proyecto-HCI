@@ -43,7 +43,7 @@ def guardarImagen(request):
 
         if formulario.is_valid():
             #print('entra aqui',request.FILES)
-            formulario.save()
+            #formulario.save()
             AccionesUsuario.guardar_imagen(str(request.FILES.get('imagenTraduccion')))
 
         return render(request, "Traducciones/IngresarTraducciones.html",{'form':formulario})
@@ -126,8 +126,7 @@ class AccionesUsuario(HttpRequest):
         image_path = os.path.join(settings.MEDIA_ROOT,image_name)
         
         print(image_path,"path")
-        #storage.child(url).put(image_path)
-        #storage.child("5.jpg").put(image_path)
+        storage.child(url).put(image_path)
 
     def obtener_imagen():
         firebaseConfig = {

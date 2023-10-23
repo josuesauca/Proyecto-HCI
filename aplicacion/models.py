@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 class Imagen(models.Model):
     idImagen = models.AutoField(primary_key=True)
-    imagenTraduccion = models.ImageField(upload_to= "imagenes/", null=True)
+    imagenTraduccion = models.ImageField(null=True)
 
 # Create your models here.
 class Traduccion(models.Model):
