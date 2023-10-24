@@ -4,9 +4,9 @@
 
 <div class="container">
     <br>
-    <h1>Seleccionar Imagen</h1>
+    <h1>Elija la traduccion</h1>
 
-    <form method="POST" id="location_form" action="{% url 'guardarImagen' %}" enctype="multipart/form-data"> 
+    <form method="POST" id="location_form" action="" enctype="multipart/form-data"> 
         {% csrf_token %}
 
         {{ form | crispy }}

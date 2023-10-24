@@ -14,7 +14,7 @@ class Traduccion(models.Model):
     idImagen = models.ForeignKey(Imagen,null=True,on_delete=models.CASCADE)
     horaTraduccion = models.DecimalField(max_digits= 6,decimal_places=2,null=True) 
     textoTraduccion = models.CharField(max_length=500,null=True) 
-    idioma = models.CharField(max_length=10,null=True) 
+    idiomaImagen = models.CharField(max_length=10,null=True) 
 
     """
     def __str__(self):
@@ -26,6 +26,7 @@ class TraduccionObtenido(models.Model):
     idTraduccionObtenida = models.AutoField(primary_key=True)
     nombreTraduccionObtenida = models.CharField(max_length=50,null=True) 
     textoTraducido = models.CharField(max_length=500,null=True) 
+    idiomaTraduccion = models.CharField(max_length=500,null=True) 
 
     calificacion = (
         (1, "Una Estrella"),

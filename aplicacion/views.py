@@ -89,12 +89,28 @@ class AccionesUsuario(HttpRequest):
         
     def guardar_imagen(request):
         formulario = FormularioImagen()
+        form_traduccion = FormularioTraduccion()
+        idiomas = [('1', 'Choice 1'), ('2', 'Choice 2'), ('3', 'Choice 3')]
         if request.method == 'POST':
             formulario = FormularioImagen(request.POST,request.FILES)
             if formulario.is_valid():
-                formulario.save()
-                AccionesUsuario.guardar_imagen_firebase(str(request.FILES.get('imagenTraduccion')))
-            return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario})
+                #formulario.save()
+
+                imagen = Imagen.objects.last()
+
+                traduccion = Traduccion.objects.create(idUsuario = request.user,
+                                                idImagen = imagen)
+                #traduccion.save()
+
+                urlImagen = AccionesUsuario.obtener_imagen(imagen)
+                textoTraducido = AccionesUsuario.traducir_texto(urlImagen)
+
+                print(textoTraducido)
+
+                #AccionesUsuario.guardar_imagen_firebase(str(request.FILES.get('imagenTraduccion')))
+
+
+            return render(request, "Traducciones/IngresarTraduccion.html",{'form':form_traduccion})
         else:
             return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario})
     
@@ -104,7 +120,7 @@ class AccionesUsuario(HttpRequest):
             firebase para usarla como almacenamiento 
         """
         firebaseConfig = {
-            "apiKey": "AIzaSyD8kAB8294CT7IZRZ8lV_Pc6EIZhOP0yJ0",
+            "apiKey": "AIzhttps://discord.com/channels/740046969082216603/740046969539395667aSyD8kAB8294CT7IZRZ8lV_Pc6EIZhOP0yJ0",
             "authDomain": "trabajo-autonomo-3-283ba.firebaseapp.com",
             "projectId": "trabajo-autonomo-3-283ba",
             "storageBucket": "trabajo-autonomo-3-283ba.appspot.com",
@@ -135,7 +151,7 @@ class AccionesUsuario(HttpRequest):
         #Almacenamos la imagen obtenida en la base de datos de firebase
         storage.child(url).put(image_path)
 
-    def obtener_imagen():
+    def obtener_imagen(imagen):
         firebaseConfig = {
             "apiKey": "AIzaSyD8kAB8294CT7IZRZ8lV_Pc6EIZhOP0yJ0",
             "authDomain": "trabajo-autonomo-3-283ba.firebaseapp.com",
@@ -161,19 +177,14 @@ class AccionesUsuario(HttpRequest):
 
         firebase = pyrebase.initialize_app(firebaseConfig)
         storage = firebase.storage()
-        
-        print('hola', storage.child('5.jpg').get_url(None))
+        #print('hola', storage.child(str(imagen)).get_url(None))
 
+        return storage.child(str(imagen)).get_url(None)
 
-    def traducir_texto(request):
-
-        formulario = FormularioImagen()
-
-        hola = request
+    def traducir_texto(urlImagen):
 
         endpoint = 'https://saucajosue.cognitiveservices.azure.com/'
         key = '59fdd9553b4643f29bb2bbb0802aad32'
-
        
         read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/5.jpg?alt=media'
 
@@ -181,8 +192,7 @@ class AccionesUsuario(HttpRequest):
 
         print("===== Read File - remote =====")
 
-        read_response = computervision_client.read(read_image_url,  raw=True)
-
+        read_response = computervision_client.read(urlImagen, raw=True)
         read_operation_location = read_response.headers["Operation-Location"]
         operation_id = read_operation_location.split("/")[-1]
 
@@ -214,7 +224,7 @@ class AccionesUsuario(HttpRequest):
         params = {
             'api-version': '3.0',
             'from': 'es',
-            'to': ['en','it']
+            'to': ['en']
         }
 
         headers = {
@@ -232,88 +242,36 @@ class AccionesUsuario(HttpRequest):
 
         request = requests.post(constructed_url, params=params, headers=headers, json=body)
         response = request.json()
+        return str(response[0]['translations'][0]['text'])
+    
+endpoint = 'https://josuepucha.cognitiveservices.azure.com/'
+key = 'abf15c809c3d4d1b867db8f365c44331'
 
-        print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
+from azure.ai.textanalytics import TextAnalyticsClient
+from azure.core.credentials import AzureKeyCredential
 
-        return render(hola, "Traducciones/IngresarTraducciones.html",{'form':formulario})
+# Authenticate the client using your key and endpoint 
+def authenticate_client():
+    ta_credential = AzureKeyCredential(key)
+    text_analytics_client = TextAnalyticsClient(
+            endpoint=endpoint, 
+            credential=ta_credential)
+    return text_analytics_client
 
+# Example method for detecting the language of text
+def language_detection_example(client):
+    try:
+        documents = ["hello i am"]
+        response = client.detect_language(documents = documents, country_hint = 'us')[0]
+        print("Language: ", response)
+        return response
+    except Exception as err:
+        print("Encountered exception. {}".format(err))
 
+def llamarfuncion(request):
+    client = authenticate_client()
+    a = language_detection_example(client)
 
-
-"""
-def Inicio(request):
-
-    endpoint = 'https://api.cognitive.microsofttranslator.com/'
-    key = 'fa12509d93ab47b691fff1f111a50c7f'
-    location = 'eastus'
-
-    path = '/translate'
-    constructed_url = endpoint + path
-    params = {
-        'api-version': '3.0',
-        'from': 'en',
-        'to': ['es', 'it']
-    }
-
-    headers = {
-        'Ocp-Apim-Subscription-Key': key,
-        # location required if you're using a multi-service or regional (not global) resource.
-        'Ocp-Apim-Subscription-Region': location,
-        'Content-type': 'application/json',
-        'X-ClientTraceId': str(uuid.uuid4())
-    }
-
-    # You can pass more than one object in body.
-    body = [{
-        'text': 'Hello, friend! What did you do today?'
-    }]
-
-    request = requests.post(constructed_url, params=params, headers=headers, json=body)
-    response = request.json()
-
-    print(json.dumps(response, sort_keys=True, ensure_ascii=False, indent=4, separators=(',', ': ')))
-
-    msg = f'hola si salio'
-
-    return HttpResponse(msg, content_type='text/plain')
-"""
-
-"""
-
-def leer_imagenes(reques):
-
-
-
-    computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))
-
-    print("===== Read File - remote =====")
-
-    read_response = computervision_client.read(read_image_url,  raw=True)
-
-    read_operation_location = read_response.headers["Operation-Location"]
-    operation_id = read_operation_location.split("/")[-1]
-
-    # Call the "GET" API and wait for it to retrieve the results 
-    while True:
-        read_result = computervision_client.get_read_result(operation_id)
-        if read_result.status not in ['notStarted', 'running']:
-            break
-        time.sleep(1)
-
-    # Print the detected text, line by line
-    if read_result.status == OperationStatusCodes.succeeded:
-        for text_result in read_result.analyze_result.read_results:
-            for line in text_result.lines:
-                print(line.text)
-                #print(line.bounding_box)
-    print()
-    '''
-    END - Read File - remote
-    '''
-
-    print("End of Computer Vision quickstart.")
-
-    msg = f'leyo imagenes' 
-
-    return HttpResponse(msg, content_type='text/plain')
-"""
+    print('salio',a['primary_language']['iso6391_name'])
+    
+    return render(request, 'index.html', {})
