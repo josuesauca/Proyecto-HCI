@@ -15,7 +15,7 @@ class Traduccion(models.Model):
     horaTraduccion = models.DecimalField(max_digits= 6,decimal_places=2,null=True) 
     textoTraduccion = models.CharField(max_length=500,null=True) 
     idiomaImagen = models.CharField(max_length=10,null=True) 
-
+   
     """
     def __str__(self):
         return f"Tarjeta : {self.idTarjeta}  , {self.numTarjeta} , {self.saldoTarjeta} "
