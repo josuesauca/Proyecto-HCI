@@ -155,7 +155,7 @@ class AccionesUsuario(HttpRequest):
         image_path = os.path.join(settings.MEDIA_ROOT,image_name)
         
         #Almacenamos la imagen obtenida en la base de datos de firebase
-        storage.child(url).put(image_path)
+        storage.child(url).put(image_path) 
 
     def obtener_imagen(imagen):
         firebaseConfig = {
