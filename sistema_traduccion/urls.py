@@ -30,6 +30,9 @@ urlpatterns = [
 
     path('', vistas.PaginaInicio,name='index'),
 
+    #URLs para generar traduccion
+    path('guardarImagen/',vistas.AccionesUsuario.guardar_imagen,name = 'guardarImagen'),
+
     path('traducirTexto/', vistas.AccionesUsuario.traducir_texto,name='traducirTexto'),
     path('guardarImagen/',vistas.guardarImagen,name = 'guardarImagen'),
 

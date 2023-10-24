@@ -1,0 +1,21 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <br>
+    <h1>Seleccionar Imagen</h1>
+
+    <form method="POST" id="location_form" action="{% url 'guardarImagen' %}" enctype="multipart/form-data"> 
+        {% csrf_token %}
+
+        {{ form | crispy }}
+        <input type="submit"  class="btn  btn-success" ></input>
+    </form>
+
+    <!-- Include the JavaScript file -->
+    {% load static %}
+    <script src="{% static 'javascript/IngresarTraducciones.js' %}"></script>
+
+</div>
+{% endblock %}

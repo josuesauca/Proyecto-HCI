@@ -80,16 +80,29 @@ class AccionesUsuario(HttpRequest):
                 password1 = request.POST['password1']
                 user = User.objects.create_user(
                         username=username, password=password1, email=email)
-                
                 my_group = Group.objects.get(name='usuario') 
                 my_group.user_set.add(user)
-
             user.save()
             return redirect("login")
         else:
             return render(request, "Usuario/Usuario.html",{})
         
-    def guardar_imagen(url):
+    def guardar_imagen(request):
+        formulario = FormularioImagen()
+        if request.method == 'POST':
+            formulario = FormularioImagen(request.POST,request.FILES)
+            if formulario.is_valid():
+                formulario.save()
+                AccionesUsuario.guardar_imagen_firebase(str(request.FILES.get('imagenTraduccion')))
+            return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario})
+        else:
+            return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario})
+    
+    def guardar_imagen_firebase(url):
+        """
+            Configuraciones necesarias para conectarse con la base de datos de 
+            firebase para usarla como almacenamiento 
+        """
         firebaseConfig = {
             "apiKey": "AIzaSyD8kAB8294CT7IZRZ8lV_Pc6EIZhOP0yJ0",
             "authDomain": "trabajo-autonomo-3-283ba.firebaseapp.com",
@@ -115,14 +128,11 @@ class AccionesUsuario(HttpRequest):
 
         path_imagen = str(url)
         image_name = path_imagen.split('/')[-1]
-
-        print(image_name,"hola")
-
         firebase = pyrebase.initialize_app(firebaseConfig)
         storage = firebase.storage()
         image_path = os.path.join(settings.MEDIA_ROOT,image_name)
         
-        print(image_path,"path")
+        #Almacenamos la imagen obtenida en la base de datos de firebase
         storage.child(url).put(image_path)
 
     def obtener_imagen():
@@ -165,13 +175,6 @@ class AccionesUsuario(HttpRequest):
         key = '59fdd9553b4643f29bb2bbb0802aad32'
 
        
-        read_image_url = "https://s.bibliaon.com/es/imagenes/gracias-senor-por-este-nuevo-dia-que-me-permites-comenzar-0.jpg"
-        #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=57f84b8f-a63b-4b85-b6fa-f83d9de7a92a&_gl=1*1j53n0p*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY3MTIzNC4yLjEuMTY5NzY3MTUwOC4zOC4wLjA.'
-        read_image_url = 'https://cdn0.bodas.com.mx/article/0265/original/1280/png/55620-1.jpeg'
-        #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/1.png?alt=media&token=dc668657-1b60-4208-8e73-389bfdac4adc&_gl=1*1h8dh2d*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5NjMzMC42LjEuMTY5NzY5NjY1Mi42MC4wLjA.'
-        #read_image_url = 'https://images.vexels.com/content/222142/preview/graffiti-alphabet-letter-set-da9351.png'
-        #read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/home%2Fjosuesauca%2FDocumentos%2FProyecto%20Grupal%2Fsistema_traduccion%2Fmedia%2F1.png?alt=media&token=205a398c-20ab-480b-b3b9-cbe3389a86bf&_gl=1*7zzbfs*_ga*MTQwOTk2MzM4OS4xNjk3NjQzNDYw*_ga_CW55HF8NVT*MTY5NzY5MDg4Ni41LjEuMTY5NzY5MTIzOC40Ny4wLjA.'
-
         read_image_url = 'https://firebasestorage.googleapis.com/v0/b/trabajo-autonomo-3-283ba.appspot.com/o/5.jpg?alt=media'
 
         computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))

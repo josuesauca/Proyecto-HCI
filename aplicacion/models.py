@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 class Imagen(models.Model):
     idImagen = models.AutoField(primary_key=True)
     imagenTraduccion = models.ImageField(null=True)
+    def __str__(self):
+        return f"{self.imagenTraduccion}"
 
 # Create your models here.
 class Traduccion(models.Model):
@@ -18,6 +20,7 @@ class Traduccion(models.Model):
     def __str__(self):
         return f"Tarjeta : {self.idTarjeta}  , {self.numTarjeta} , {self.saldoTarjeta} "
     """
+
 class TraduccionObtenido(models.Model):
     idTraduccion = models.ForeignKey(Traduccion,null=True,on_delete=models.CASCADE)
     idTraduccionObtenida = models.AutoField(primary_key=True)

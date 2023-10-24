@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 
 from .models import Traduccion,TraduccionObtenido, Imagen
 
-
 class FormularioTraduccion(forms.ModelForm):
     class Meta:
         model = Traduccion
@@ -29,4 +28,8 @@ class FormularioUsuario(UserCreationForm):
 class FormularioImagen(forms.ModelForm):
     class Meta:
         model = Imagen
-        fields = ['imagenTraduccion']
+        fields = "__all__"
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['imagenTraduccion'].label = ''
+
