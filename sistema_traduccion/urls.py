@@ -28,7 +28,7 @@ urlpatterns = [
     #path('prueba/', vistas.Inicio,name='prueba'),
     #path('imagenes/', vistas.AccionesUsuario.traducir_texto,name='imagenes'),
 
-    path('', vistas.llamarfuncion,name='index'),
+    path('', vistas.PaginaInicio,name='index'),
 
     #URLs para generar traduccion
     path('guardarImagen/',vistas.AccionesUsuario.guardar_imagen,name = 'guardarImagen'),

@@ -10,6 +10,16 @@
         {% csrf_token %}
 
         {{ form | crispy }}
+
+        
+        <h5>Seleccione un idioma para traducir</h5>
+        <select name="idiomas" class="btn btn-info dropdown-toggle dropdownMenuButton">
+            {% for id, label in idiomas %}
+                <option value="{{ id }}" class="dropdown-item">{{ label }}</option>
+            {% endfor %}
+        </select>
+
+        <br><br>
         <input type="submit"  class="btn  btn-success" ></input>
     </form>
 

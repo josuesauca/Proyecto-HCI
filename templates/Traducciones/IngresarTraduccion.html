@@ -9,6 +9,7 @@
     <form method="POST" id="location_form" action="" enctype="multipart/form-data"> 
         {% csrf_token %}
 
+
         {{ form | crispy }}
         <input type="submit"  class="btn  btn-success" ></input>
     </form>
