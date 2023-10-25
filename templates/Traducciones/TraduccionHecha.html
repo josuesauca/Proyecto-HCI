@@ -1,0 +1,34 @@
+{% extends "index.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="container">
+    <p></p>
+    <p></p>
+    <h1>Traducciòn Hecha</h1>
+    
+    <table class="table table-dark">
+        <thead>
+            <tr>
+                <th scope="col">Hora Traduccion</th>
+                <td>{{traduccionHecha.horaTraduccion}}</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th scope="row"> Texto de la Traduccion</th>
+                <td>{{traduccionHecha.textoTraduccion}}</td>
+            </tr>
+            <tr>
+                <th scope="row"> Idioma de la Imagen</th>
+                <td>{{traduccionHecha.idiomaImagen}}</td>  
+            </tr>
+            <tr>
+                <th scope="row"> Imagen Ingresada</th>
+                <td><img src="{{ traduccionHecha.imagenTraduccion.url }}" alt="My Image"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

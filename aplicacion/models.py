@@ -12,7 +12,7 @@ class Traduccion(models.Model):
     idTraduccion = models.AutoField(primary_key=True)
     idUsuario = models.ForeignKey(User,null=True,on_delete=models.CASCADE)
     idImagen = models.ForeignKey(Imagen,null=True,on_delete=models.CASCADE)
-    horaTraduccion = models.DecimalField(max_digits= 6,decimal_places=2,null=True) 
+    horaTraduccion = models.DateTimeField(null=True)
     textoTraduccion = models.CharField(max_length=500,null=True) 
     idiomaImagen = models.CharField(max_length=10,null=True) 
    

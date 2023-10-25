@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpRequest
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 from django.conf import settings
+from datetime import datetime
 
 
 from .decorators import unauthenticated_user,admin_only
@@ -98,25 +99,25 @@ class AccionesUsuario(HttpRequest):
                 #formulario.save()
 
                 imagen = Imagen.objects.last()
+                idiomaTraducir = request.POST.get('idiomas')
 
-                print("2323",request.POST.get('idiomas'))
-
-                """
-                
-                traduccion = Traduccion.objects.create(idUsuario = request.user,
-                                                idImagen = imagen)
-                """
-                #traduccion.save()
+                #print("2323",request.POST.get('idiomas'))
 
                 urlImagen = AccionesUsuario.obtener_imagen(imagen)
-                textoTraducido = AccionesUsuario.traducir_texto(urlImagen)
+                textoTraducido = AccionesUsuario.traducir_texto(urlImagen,idiomaTraducir)
 
-                #print(textoTraducido)
+                print(textoTraducido)
+
+                traduccion = Traduccion.objects.create(idUsuario = request.user,
+                                                idImagen = imagen,
+                                                horaTraduccion = datetime.now()
+                                                ,textoTraduccion = textoTraducido['textoImagen'],
+                                                idiomaImagen = textoTraducido['idiomaObtenido'])
+                
+                traduccion.save()
 
                 #AccionesUsuario.guardar_imagen_firebase(str(request.FILES.get('imagenTraduccion')))
-
-
-            return render(request, "Traducciones/IngresarTraduccion.html",{'form':form_traduccion})
+            return render(request, "Traducciones/TraduccionHecha.html",{'traduccionHecha':traduccion})
         else:
             return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario,'idiomas':idiomas})
     
@@ -185,7 +186,7 @@ class AccionesUsuario(HttpRequest):
         storage = firebase.storage()
         return storage.child(str(imagen)).get_url(None)
 
-    def traducir_texto(urlImagen):
+    def traducir_texto(urlImagen,idiomaTraducir):
 
         endpoint = 'https://saucajosue.cognitiveservices.azure.com/'
         key = '59fdd9553b4643f29bb2bbb0802aad32'
@@ -213,12 +214,9 @@ class AccionesUsuario(HttpRequest):
         #print("palabras obtenidas ", palabras_imagen)
 
         #Obtener el idioma de la imagen a traducir
-
         client = AccionesUsuario.authenticate_client()
         idiomaObtenido = AccionesUsuario.language_detection_example(client,palabras_imagen)
         idiomaObtenido = idiomaObtenido['primary_language']['iso6391_name']
-
-        #print('salio ',idiomaObtenido)
 
         #Traduccir el texto obtenido
         endpoint = 'https://api.cognitive.microsofttranslator.com/'
@@ -230,7 +228,7 @@ class AccionesUsuario(HttpRequest):
         params = {
             'api-version': '3.0',
             'from': ''+idiomaObtenido,
-            'to': ['en']
+            'to': [''+idiomaTraducir]
         }
 
         headers = {
@@ -248,7 +246,9 @@ class AccionesUsuario(HttpRequest):
 
         request = requests.post(constructed_url, params=params, headers=headers, json=body)
         response = request.json()
-        return str(response[0]['translations'][0]['text'])
+        return {'traduccionRealizada' : str(response[0]['translations'][0]['text'])
+                ,'textoImagen':palabras_imagen ,
+                'idiomaObtenido':idiomaObtenido}  
     
     # Authenticate the client using your key and endpoint 
     def authenticate_client():
@@ -265,7 +265,6 @@ class AccionesUsuario(HttpRequest):
         try:
             documents = [textoObtenido+""]
             response = client.detect_language(documents = documents, country_hint = 'us')[0]
-            #print("Language: ", response)
             return response
         except Exception as err:
             print("Encountered exception. {}".format(err))
