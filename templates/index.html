@@ -39,10 +39,10 @@
                 {% if user.is_authenticated %}
                     {% if user.is_superuser %}
                         <a class="nav-link" href="{% url 'guardarImagen' %}" role="button" aria-haspopup="true" aria-expanded="false"> Traducir </a>
-                        <a class="nav-link" href="" role="button" aria-haspopup="true" aria-expanded="false"> Ver Traducciones Realizadas </a>
+                        <a class="nav-link" href="{% url 'verTraducciones' %}" role="button" aria-haspopup="true" aria-expanded="false"> Ver Traducciones Realizadas </a>
                     {% else %}
                         <a class="nav-link" href="{% url 'guardarImagen' %}" role="button" aria-haspopup="true" aria-expanded="false"> Traducir</a>
-                        <a class="nav-link" href="" role="button" aria-haspopup="true" aria-expanded="false"> Ver Traducciones Realizadas </a>
+                        <a class="nav-link" href="{% url 'verTraducciones' %}" role="button" aria-haspopup="true" aria-expanded="false"> Ver Traducciones Realizadas </a>
                     {% endif %}
                 {% endif %}
 

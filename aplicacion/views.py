@@ -7,6 +7,7 @@ from django.conf import settings
 from datetime import datetime
 
 
+
 from .decorators import unauthenticated_user,admin_only
 from .models import *
 from .forms import *
@@ -31,28 +32,7 @@ import requests, uuid, json
 #Libreria del firebase
 import pyrebase
 
-
-
-def guardarImagen(request):
-    formulario = FormularioImagen()
-    if request.method == 'POST':
-        formulario = FormularioImagen(request.POST,request.FILES)
-        #imagen = request.POST.get('input').name
-        #print("url",request.FILES['input'].temporary_file_path())
-        #print("url",imagen)
-        #AccionesUsuario.guardar_imagen(request.FILES.get('imagenTraduccion'))
-
-        if formulario.is_valid():
-            #print('entra aqui',request.FILES)
-            #formulario.save()
-            AccionesUsuario.guardar_imagen(str(request.FILES.get('imagenTraduccion')))
-
-        return render(request, "Traducciones/IngresarTraducciones.html",{'form':formulario})
-    else:
-        return render(request, "Traducciones/IngresarTraducciones.html",{'form':formulario})
-
 def PaginaInicio(request):
-    #AccionesUsuario.obtener_imagen()
     return render(request, 'index.html', {})
 
 class AccionesUsuario(HttpRequest):
@@ -101,8 +81,6 @@ class AccionesUsuario(HttpRequest):
                 imagen = Imagen.objects.last()
                 idiomaTraducir = request.POST.get('idiomas')
 
-                #print("2323",request.POST.get('idiomas'))
-
                 urlImagen = AccionesUsuario.obtener_imagen(imagen)
                 textoTraducido = AccionesUsuario.traducir_texto(urlImagen,idiomaTraducir)
 
@@ -121,6 +99,11 @@ class AccionesUsuario(HttpRequest):
         else:
             return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario,'idiomas':idiomas})
     
+    def ver_traducciones_realizadas(request):
+        traducciones = TraduccionObtenido.objects.all()
+        return render(request, "Traducciones/VerTraducciones.html",{'traducciones':traducciones})
+    
+
     def guardar_imagen_firebase(url):
         """
             Configuraciones necesarias para conectarse con la base de datos de 

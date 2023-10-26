@@ -14,32 +14,31 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
+
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 
-
 import aplicacion.views as vistas
 
 urlpatterns = [
-
+    #URLs Admin
     path('admin/', admin.site.urls),
-    #path('prueba/', vistas.Inicio,name='prueba'),
-    #path('imagenes/', vistas.AccionesUsuario.traducir_texto,name='imagenes'),
 
+    #URLs Usuario
     path('', vistas.PaginaInicio,name='index'),
+    path('login/', vistas.AccionesUsuario.log_in ,name='login'),
+    path('registrarUsuario/', vistas.AccionesUsuario.registro_usuario ,name='registrarUsuario'),
+    path('logout/', vistas.AccionesUsuario.log_out ,name='logout'),
+
 
     #URLs para generar traduccion
     path('guardarImagen/',vistas.AccionesUsuario.guardar_imagen,name = 'guardarImagen'),
 
-    #path('traducirTexto/', vistas.AccionesUsuario.traducir_texto,name='traducirTexto'),
-    #path('guardarImagen/',vistas.guardarImagen,name = 'guardarImagen'),
+    #URLs para ver traducciones
+    path('verTraducciones/',vistas.AccionesUsuario.ver_traducciones_realizadas,name = 'verTraducciones'),
 
-    #URLs Usuario
-    path('login/', vistas.AccionesUsuario.log_in ,name='login'),
-    path('registrarUsuario/', vistas.AccionesUsuario.registro_usuario ,name='registrarUsuario'),
-    path('logout/', vistas.AccionesUsuario.log_out ,name='logout'),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

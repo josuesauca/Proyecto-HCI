@@ -4,22 +4,8 @@
 
 <div class="container">
 
-    <h1>Registrar Imagen</h1>
-
-    <form method="POST" id="location_form" action="{% url 'guardarImagen' %}" enctype="multipart/form-data"> 
-        {% csrf_token %}
-
-        {{ form | crispy }}
-        <input type="submit"></input>
-    </form>
-
-    <!-- Include the JavaScript file -->
-    {% load static %}
-    <script src="{% static 'javascript/IngresarTraducciones.js' %}"></script>
-
     <p></p>
-    <p></p>
-    <h1>Tarjetas Registradas</h1>
+    <h1>Tradicciones Realizadas</h1>
     <p></p>
     <p></p>
 
@@ -27,15 +13,21 @@
         <thead>
             <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Número Tarjeta</th>
-                <th scope="col">Saldo Tarjeta</th>
+                <th scope="col">Nombre de la Traduccion</th>
+                <th scope="col">Texto Traducido</th>
+                <th scope="col">Idioma Traducido</th>
             </tr>
         </thead>
         <tbody>
-
-            <tr>
+            {% for traduccion in traducciones %}
+                <tr>
+                    <th scope="col">{{traduccion.idTraduccion}}</th>
+                    <th scope="col">{{traduccion.nombreTraduccionObtenida}}</th>
+                    <th scope="col">{{traduccion.textoTraducido}}</th>
+                    <th scope="col">{{traduccion.idiomaTraduccion}}</th>
+                </tr>
+            {% endfor %}
           
-            </tr>
         </tbody>
     </table>
 </div>

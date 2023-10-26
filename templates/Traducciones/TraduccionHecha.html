@@ -23,10 +23,13 @@
                 <th scope="row"> Idioma de la Imagen</th>
                 <td>{{traduccionHecha.idiomaImagen}}</td>  
             </tr>
-            <tr>
-                <th scope="row"> Imagen Ingresada</th>
-                <td><img src="{{ traduccionHecha.imagenTraduccion.url }}" alt="My Image"></td>
-            </tr>
+            {% if traduccionHecha.idImagen.imagenTraduccion %}
+                <tr>
+                    <th scope="row"> Imagen Ingresada</th>
+                    <td><img src="{{ traduccionHecha.idImagen.imagenTraduccion.url }}" alt="My Image"></td>
+                </tr>
+            {% endif%}
+            
         </tbody>
     </table>
 </div>
