@@ -11,32 +11,32 @@
         <thead>
             <tr>
                 <th scope="col">Hora Traduccion</th>
-                <td>{{traduccionHecha.horaTraduccion}}</td>
+                <td>{{traduccionHecha.idTraduccion.horaTraduccion}}</td>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <th scope="row"> Texto de la Traduccion</th>
-                <td>{{traduccionHecha.textoTraduccion}}</td>
+                <td>{{traduccionHecha.idTraduccion.textoTraduccion}}</td>
             </tr>
             <tr>
                 <th scope="row"> Idioma de la Imagen</th>
-                <td>{{traduccionHecha.idiomaImagen}}</td>  
+                <td>{{traduccionHecha.idTraduccion.idiomaImagen}}</td>  
             </tr>
-            {% if traduccionHecha.idImagen.imagenTraduccion %}
+            {% if traduccionHecha.idTraduccion.idImagen.imagenTraduccion %}
                 <tr>
                     <th scope="row"> Imagen Ingresada</th>
-                    <td><img src="{{ traduccionHecha.idImagen.imagenTraduccion.url }}" alt="My Image"></td>
+                    <td><img src="{{ traduccionHecha.idTraduccion.idImagen.imagenTraduccion.url }}" alt="My Image"></td>
                 </tr>
             {% endif%}
 
             <tr>
                 <th scope="row"> Idioma de la Traduccion</th>
-                <td>{{traduccionHecha.idiomaImagen}}</td>  
+                <td>{{traduccionHecha.textoTraducido}}</td>  
             </tr>
             <tr>
                 <th scope="row"> Texto Traducido</th>
-                <td>{{traduccionHecha.idiomaImagen}}</td>  
+                <td>{{traduccionHecha.idiomaTraduccion}}</td>  
             </tr>
         </tbody>
     </table>

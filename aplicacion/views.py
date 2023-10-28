@@ -93,15 +93,15 @@ class AccionesUsuario(HttpRequest):
                                                 ,textoTraduccion = textoTraducido['textoImagen'],
                                                 idiomaImagen = textoTraducido['idiomaObtenido'])
                 
-                #traduccion.save()
                 numTraduccion = "Traduccion Nr : "+str(Traduccion.objects.count())
 
+                #Crear un objeto de la traduccion obtenida
                 traduccionbtenida = TraduccionObtenido.objects.create(idTraduccion = traduccion,
                                                                 nombreTraduccionObtenida = numTraduccion,
                                                                 textoTraducido = textoTraducido['traduccionRealizada'],
                                                                 idiomaTraduccion = idiomaTraducir)
 
-            return render(request, "Traducciones/TraduccionHecha.html",{'traduccionHecha':traduccion})
+            return render(request, "Traducciones/TraduccionHecha.html",{'traduccionHecha':traduccionbtenida})
         else:
             return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario,'idiomas':idiomas})
     
