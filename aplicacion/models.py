@@ -16,24 +16,16 @@ class Traduccion(models.Model):
     textoTraduccion = models.CharField(max_length=500,null=True) 
     idiomaImagen = models.CharField(max_length=10,null=True) 
    
-    """
     def __str__(self):
-        return f"Tarjeta : {self.idTarjeta}  , {self.numTarjeta} , {self.saldoTarjeta} "
-    """
+        return f"Traduccion : {self.idTraduccion}"
 
 class TraduccionObtenido(models.Model):
-    idTraduccion = models.ForeignKey(Traduccion,null=True,on_delete=models.CASCADE)
     idTraduccionObtenida = models.AutoField(primary_key=True)
+    idTraduccion = models.ForeignKey(Traduccion,null=True,on_delete=models.CASCADE)
     nombreTraduccionObtenida = models.CharField(max_length=50,null=True) 
     textoTraducido = models.CharField(max_length=500,null=True) 
     idiomaTraduccion = models.CharField(max_length=500,null=True) 
 
-    calificacion = (
-        (1, "Una Estrella"),
-        (2, "Dos Estrellas"),
-        (3, "Tres Estrellas"),
-        (4, "Cuatro Estrellas"),
-        (5, "Cinco Estrellas")
-    )
-    calificacionTraduccion = models.IntegerField(null=True)
+    def __str__(self):
+        return f"Traduccion Obtenida: {self.idTraduccion}"
 

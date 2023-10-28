@@ -32,13 +32,9 @@ urlpatterns = [
     path('registrarUsuario/', vistas.AccionesUsuario.registro_usuario ,name='registrarUsuario'),
     path('logout/', vistas.AccionesUsuario.log_out ,name='logout'),
 
-
-    #URLs para generar traduccion
+    #URLs traduccion
     path('guardarImagen/',vistas.AccionesUsuario.guardar_imagen,name = 'guardarImagen'),
-
-    #URLs para ver traducciones
     path('verTraducciones/',vistas.AccionesUsuario.ver_traducciones_realizadas,name = 'verTraducciones'),
-
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

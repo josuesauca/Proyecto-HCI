@@ -6,8 +6,6 @@ from django.contrib.auth.models import User, Group
 from django.conf import settings
 from datetime import datetime
 
-
-
 from .decorators import unauthenticated_user,admin_only
 from .models import *
 from .forms import *
@@ -71,30 +69,38 @@ class AccionesUsuario(HttpRequest):
         
     def guardar_imagen(request):
         formulario = FormularioImagen()
-        form_traduccion = FormularioTraduccion()
         idiomas = [('es', 'Español'), ('en', 'Ingles'), ('fr', 'Frances')]
         if request.method == 'POST':
             formulario = FormularioImagen(request.POST,request.FILES)
             if formulario.is_valid():
-                #formulario.save()
+                formulario.save()
+
+                AccionesUsuario.guardar_imagen_firebase(str(request.FILES.get('imagenTraduccion')))
 
                 imagen = Imagen.objects.last()
                 idiomaTraducir = request.POST.get('idiomas')
 
                 urlImagen = AccionesUsuario.obtener_imagen(imagen)
+                print(urlImagen)
                 textoTraducido = AccionesUsuario.traducir_texto(urlImagen,idiomaTraducir)
 
                 print(textoTraducido)
 
+                #Crear un objeto de la traduccion que vamos a realizar 
                 traduccion = Traduccion.objects.create(idUsuario = request.user,
                                                 idImagen = imagen,
                                                 horaTraduccion = datetime.now()
                                                 ,textoTraduccion = textoTraducido['textoImagen'],
                                                 idiomaImagen = textoTraducido['idiomaObtenido'])
                 
-                traduccion.save()
+                #traduccion.save()
+                numTraduccion = "Traduccion Nr : "+str(Traduccion.objects.count())
 
-                #AccionesUsuario.guardar_imagen_firebase(str(request.FILES.get('imagenTraduccion')))
+                traduccionbtenida = TraduccionObtenido.objects.create(idTraduccion = traduccion,
+                                                                nombreTraduccionObtenida = numTraduccion,
+                                                                textoTraducido = textoTraducido['traduccionRealizada'],
+                                                                idiomaTraduccion = idiomaTraducir)
+
             return render(request, "Traducciones/TraduccionHecha.html",{'traduccionHecha':traduccion})
         else:
             return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario,'idiomas':idiomas})
@@ -103,7 +109,6 @@ class AccionesUsuario(HttpRequest):
         traducciones = TraduccionObtenido.objects.all()
         return render(request, "Traducciones/VerTraducciones.html",{'traducciones':traducciones})
     
-
     def guardar_imagen_firebase(url):
         """
             Configuraciones necesarias para conectarse con la base de datos de 
