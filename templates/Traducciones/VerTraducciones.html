@@ -16,15 +16,20 @@
                 <th scope="col">Nombre de la Traduccion</th>
                 <th scope="col">Texto Traducido</th>
                 <th scope="col">Idioma Traducido</th>
+                <th scope="col">Imagen Traducciòn</th>
             </tr>
         </thead>
         <tbody>
             {% for traduccion in traducciones %}
                 <tr>
-                    <th scope="col">{{traduccion.idTraduccion}}</th>
+                    <th scope="col">{{traduccion.idTraduccionObtenida}}</th>
                     <th scope="col">{{traduccion.nombreTraduccionObtenida}}</th>
                     <th scope="col">{{traduccion.textoTraducido}}</th>
                     <th scope="col">{{traduccion.idiomaTraduccion}}</th>
+
+                    {% if traduccion.idTraduccion.idImagen.imagenTraduccion %}
+                        <td><img src="{{ traduccion.idTraduccion.idImagen.imagenTraduccion.url }}" alt="My Image"></td>
+                    {% endif%}
                 </tr>
             {% endfor %}
           
