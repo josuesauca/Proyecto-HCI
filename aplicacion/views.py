@@ -19,6 +19,10 @@ from msrest.authentication import CognitiveServicesCredentials
 from azure.ai.textanalytics import TextAnalyticsClient
 from azure.core.credentials import AzureKeyCredential
 
+from django.contrib.auth.decorators import login_required
+
+
+
 from array import array
 import os
 from PIL import Image
@@ -30,8 +34,21 @@ import requests, uuid, json
 #Libreria del firebase
 import pyrebase
 
+
 def PaginaInicio(request):
     return render(request, 'index.html', {})
+
+def obtenerIdiomasTraductor():
+    idiomas_lista = []
+    url = 'https://api.cognitive.microsofttranslator.com/languages?api-version=3.0'
+    response = requests.get(url)
+    datos = response.json()
+    idiomas_traducciones = datos['translation']
+
+    for key in idiomas_traducciones.items():
+        idiomas_lista.append((key[0],key[1]['name']))
+
+    return idiomas_lista
 
 class AccionesUsuario(HttpRequest):
 
@@ -66,10 +83,12 @@ class AccionesUsuario(HttpRequest):
             return redirect("login")
         else:
             return render(request, "Usuario/Usuario.html",{})
-        
+    
+    @login_required
     def guardar_imagen(request):
         formulario = FormularioImagen()
-        idiomas = [('es', 'Español'), ('en', 'Ingles'), ('fr', 'Frances')]
+        idiomas = obtenerIdiomasTraductor()
+
         if request.method == 'POST':
             formulario = FormularioImagen(request.POST,request.FILES)
             if formulario.is_valid():
@@ -105,9 +124,11 @@ class AccionesUsuario(HttpRequest):
         else:
             return render(request, "Traducciones/IngresarImagenTraduccion.html",{'form':formulario,'idiomas':idiomas})
     
+    @login_required
     def ver_traducciones_realizadas(request):
-        traducciones = TraduccionObtenido.objects.all()
-        return render(request, "Traducciones/VerTraducciones.html",{'traducciones':traducciones})
+        traducciones = Traduccion.objects.filter(idUsuario=request.user)
+        traducciones_obtenidas = TraduccionObtenido.objects.filter(idTraduccion__in=traducciones)
+        return render(request, "Traducciones/VerTraducciones.html",{'traducciones':traducciones_obtenidas})
     
     def guardar_imagen_firebase(url):
         """
