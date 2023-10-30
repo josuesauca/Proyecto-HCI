@@ -197,8 +197,8 @@ class AccionesUsuario(HttpRequest):
 
     def traducir_texto(urlImagen,idiomaTraducir):
 
-        endpoint = 'https://saucajosue.cognitiveservices.azure.com/'
-        key = '59fdd9553b4643f29bb2bbb0802aad32'
+        endpoint = 'url_custom_service'
+        key = 'key_custom'
        
         computervision_client = ComputerVisionClient(endpoint, CognitiveServicesCredentials(key))
         print("===== Read File - remote =====")
@@ -228,8 +228,8 @@ class AccionesUsuario(HttpRequest):
         idiomaObtenido = idiomaObtenido['primary_language']['iso6391_name']
 
         #Traduccir el texto obtenido
-        endpoint = 'https://api.cognitive.microsofttranslator.com/'
-        key = 'fa12509d93ab47b691fff1f111a50c7f'
+        endpoint = 'url_custom_service'
+        key = 'key_custom'
         location = 'eastus'
 
         path = '/translate'
@@ -261,8 +261,8 @@ class AccionesUsuario(HttpRequest):
     
     # Authenticate the client using your key and endpoint 
     def authenticate_client():
-        endpoint = 'https://josuepucha.cognitiveservices.azure.com/'
-        key = 'abf15c809c3d4d1b867db8f365c44331'
+        endpoint = 'url_custom_service'
+        key = 'key_service'
         ta_credential = AzureKeyCredential(key)
         text_analytics_client = TextAnalyticsClient(
                 endpoint=endpoint, 
