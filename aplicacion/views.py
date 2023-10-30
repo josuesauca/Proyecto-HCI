@@ -40,6 +40,7 @@ def PaginaInicio(request):
 
 def obtenerIdiomasTraductor():
     idiomas_lista = []
+    #Api idiomas de azure
     url = 'https://api.cognitive.microsofttranslator.com/languages?api-version=3.0'
     response = requests.get(url)
     datos = response.json()
@@ -136,19 +137,19 @@ class AccionesUsuario(HttpRequest):
             firebase para usarla como almacenamiento 
         """
         firebaseConfig = {
-            "apiKey": "AIzhttps://discord.com/channels/740046969082216603/740046969539395667aSyD8kAB8294CT7IZRZ8lV_Pc6EIZhOP0yJ0",
-            "authDomain": "trabajo-autonomo-3-283ba.firebaseapp.com",
-            "projectId": "trabajo-autonomo-3-283ba",
-            "storageBucket": "trabajo-autonomo-3-283ba.appspot.com",
-            "messagingSenderId": "158058285647",
-            "appId": "1:158058285647:web:ab8a77af641bd438f7f83a",
+            "apiKey": "url_api_custom_firebase",
+            "authDomain": "proyecto_url_custom",
+            "projectId": "proyect_id",
+            "storageBucket": "proyect_configs",
+            "messagingSenderId": "proyect_configs",
+            "appId": "proyect_configs",
             'serviceAccount' : {
                                     "type": "service_account",
-                                    "project_id": "trabajo-autonomo-3-283ba",
-                                    "private_key_id": "0da389d4bf98c1de7c54bc49df9520bbc178b209",
-                                    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDARGIM8GJgDlV8\nCe5SR/tNTx9TLdG3lVHWzTexehYQIKL+CqkkL/tiRwbR4aQSNhcvKJNWDfKN5MVK\nRojFkR77Y6LcPqrOORXI4/9Mkb9OREZ6Sxkf6K6xxfaMeuj7SCwz0J0U6fwHHx0L\nI2BrZzab0wVtrInoGiFh2tpr8DXVZ2sv5Iq0PF610ox4VCpIoRw2Fqba3ThP9D2h\nh1B0n25Deze7cLnSIOMnA3JZCS101y9UvfMX6lgT25kH0V6x5ZRj1lpJMQBBmWd5\nHJVmHE+ZNOd90/ncXkbndtzvUIIm+tV6iu7ntR07Sq9D3wY/vICj8agfYSkNsWg8\npS2GZEr/AgMBAAECggEAOuK2xQ+6kYDSXbMM8tZo+TyKc4dM+9UXw5oGvKyPpVDZ\nmsTZGOQ5MdhfFljtT0aRwzfCKFENQLgYVK9VpGzV+FiDwMDQv2hsa6KoxmK9HNN8\nYmgtwcAaAQiIgm4CfTOVlikGcylWrzewRYEIPtzVtNPkjbqSYivenYHR880WL818\nYEhleRLmspoMNsDQn0ROIPfJ0j+LekwOE4QwZkSf/2Kj08LE8tVaLnQiTNFjGojb\ng0JuK67ln+ZFVFh4DqbVqmyS90/Z/T0mH+O8mbFVGNPpfAMSkiq3TKfuLuT3ULXi\naCJ19JlcnSka3bMHEl00tPul8mTov7eGrQmpvesbAQKBgQDzn1ibHf4QZJlDY7P7\nr/5A7erBIBcakl+vSaIBA7MubK08U37lBaAnfR7jr0cEszRqN23rb9rsFI4+e0PF\nkB2lbGmD+QoyFWcxvSY5H8RVEwCtEi3UDjwNe0PQDKe5ERiEFS8NqY5+9FZTYk2G\nAex9ec0kiyAqrjbZrOy2djMiDwKBgQDKCRagfiiti63SaAY5AKWK6jnXHOlyz/O/\nbTESFo9R2QQEth6dUtm+XrdY4TeZjfTuYp55jIx/S/smlL5qaYYrWpKFP+R3r6AO\nYyuQcj58YmCvWdZTPrXYzkM8wPLIMmMLHuTvIZclFMiWKDOsC/dOifJg6biJLjGF\noFj6Ynh4EQKBgQCFXOGAaLa/+pH71gSc7wbcPGGaPxrmrOI8bq6Ep6Xa8BsVPw/k\nB2RYuaHDOhxCcmdrDdTaYW0Sd142zfuXlwDjoalRWW8/Y4AONmFKPB2aBMEF/UGh\nJ/mv156TsZnPMZCeHYqYjA05akAnfVS62yq+tYKbUp3VP3E/T+51I9dx+QKBgHoc\nkiOA/R8frHjezNwJKwVSWpFM9UCiteV+nska/5btvwMF/G0EVX09jD3ZKhzSczbe\nPoCi1YxfJTaFcq2oiCKOBL8rBfDdIrVvdTZCBshxQZTajLMV1R1sVbFTwaoE4l4n\nVyG9wLf13uL6+3hCZ0B+GhQ/T30CgYYNi5oSiFOxAoGBAMT7ZJlyG0HUDDkr23BF\nBNR+Q+6VOY3SeCB45CNkqWMwk/HngMjQwDjZsmyCIDIqkfRrH70D9iEFqTX+y7Rt\nW/SmTZMZ9ZjL/Ir/Yqz9cgnXAEccYdbhtZlveZQW+lRq1pUVTNmH4JZ4+E73NaMy\nUh/u1QFV1pxtRt6U3j9lYq6P\n-----END PRIVATE KEY-----\n",
+                                    "project_id": "proyect_configs",
+                                    "private_key_id": "proyect_configs",
+                                    "private_key": "proyect_configs",
                                     "client_email": "firebase-adminsdk-ks91j@trabajo-autonomo-3-283ba.iam.gserviceaccount.com",
-                                    "client_id": "117284635281132318881",
+                                    "client_id": "proyect_configs",
                                     "auth_uri": "https://accounts.google.com/o/oauth2/auth",
                                     "token_uri": "https://oauth2.googleapis.com/token",
                                     "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
